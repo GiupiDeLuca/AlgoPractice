@@ -1,13 +1,3 @@
-// function isMonotonic(array) {
-//   // Write your code here.
-//   for (let i = 1; i < array.length; i++) {
-//     const isUpward = (array) => array[i] >= array[i - 1];
-//     const isDownWard = (array) => array[i] <= array[i - 1];
-
-//     return isUpward(array) || isDownWard(array);
-//   }
-// }
-
 function isMonotonic(array) {
   // Write your code here.
   let isNonIncreasing = true;

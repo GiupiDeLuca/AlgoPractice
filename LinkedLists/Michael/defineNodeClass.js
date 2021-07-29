@@ -101,6 +101,15 @@ class LinkedList {
    */
   insertLast(value, startingNode) {
     //define
+    const lastNode = new Node(value);
+    while (startingNode.getNext() !== null) {
+      startingNode = startingNode.getNext();
+    }
+    if (startingNode.getNext() === null) {
+      startingNode.setNext(lastNode);
+      this._count += 1;
+    }
+    return lastNode;
   }
 
   /**
@@ -112,6 +121,18 @@ class LinkedList {
    */
   insertAt(position, value) {
     //define
+    const nodeToInsert = new Node(value);
+    let currentPosition = 1;
+    let currentNode = this._head;
+
+    while (currentPosition < position) {
+      currentNode = currentNode.getNext();
+      currentPosition += 1;
+    }
+    nodeToInsert.setNext(currentNode.getNext());
+    currentNode.setNext(nodeToInsert);
+    this._count += 1;
+    return nodeToInsert;
   }
 
   /**
@@ -121,6 +142,9 @@ class LinkedList {
    */
   removeFirst() {
     //define
+    this._head = this._head.getNext();
+    this._count = this._count - 1;
+    return this;
   }
 
   /**
@@ -130,6 +154,13 @@ class LinkedList {
    */
   removeLast() {
     //define
+    let currentNode = this._head;
+    while (currentNode.getNext().getNext() !== null) {
+      currentNode = currentNode.getNext();
+    }
+    currentNode.setNext(null);
+    this._count -= 1;
+    return this;
   }
 
   /**
@@ -150,6 +181,17 @@ class LinkedList {
    */
   removeAt(position) {
     //define
+    let currentPosition = 1;
+    let currentNode = this._head.getNext();
+    let previousNode = this._head;
+    while (currentPosition < position) {
+      currentNode = currentNode.getNext();
+      previousNode = previousNode.getNext();
+      currentPosition += 1;
+    }
+    previousNode.setNext(currentNode.getNext());
+    this._count -= 1;
+    return this;
   }
 
   /**
@@ -238,3 +280,9 @@ class LinkedList {
     this._count = 0;
   }
 }
+
+const list = new LinkedList();
+list.insertFirst(6);
+list.insertFirst(7);
+list.insertFirst(8);
+list.insertFirst(9);

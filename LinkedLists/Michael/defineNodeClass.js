@@ -111,9 +111,9 @@ class LinkedList {
         this._count += 1;
       }
     } else {
-      this._head = lastNode
+      this._head = lastNode;
     }
-    
+
     return lastNode;
   }
 
@@ -176,21 +176,21 @@ class LinkedList {
    */
   removeEach(callback) {
     //define
-    if (typeof(callback) !== "function") {
-      throw new Error(`removeEach method needs callback to be a function`)
+    if (typeof callback !== "function") {
+      throw new Error(`removeEach method needs callback to be a function`);
     }
-    let count = 0
+    let count = 0;
     this.forEach((node, position) => {
       if (callback(node)) {
         if (position === 0) {
-          this._head = node.getNext()
-          count += 1
+          this._head = node.getNext();
+          count += 1;
         }
-        this.removeAt(position)
-        count += 1
+        this.removeAt(position);
+        count += 1;
       }
-    })
-    return count
+    });
+    return count;
   }
 
   /**
@@ -221,15 +221,15 @@ class LinkedList {
    */
   forEach(callback) {
     //define
-    if (typeof(callback) !== "function") {
-      throw new Error(`forEach needs callback to be a function`)
+    if (typeof callback !== "function") {
+      throw new Error(`forEach needs callback to be a function`);
     }
-    let currentNode = this._head
-    let position = 0
+    let currentNode = this._head;
+    let position = 0;
     while (currentNode) {
-      callback(currentNode, position)
-      currentNode = currentNode.getNext()
-      position += 1
+      callback(currentNode, position);
+      currentNode = currentNode.getNext();
+      position += 1;
     }
   }
 
@@ -239,17 +239,17 @@ class LinkedList {
    * @returns {Node}
    */
   find(callback) {
-    if (typeof(callback) !== "function") {
-      throw new Error(`find method needs callback to be a function`)
+    if (typeof callback !== "function") {
+      throw new Error(`find method needs callback to be a function`);
     }
-    let currentNode = this._head
+    let currentNode = this._head;
     while (currentNode) {
       if (callback(currentNode)) {
-        return currentNode
-      } 
-      currentNode = currentNode.getNext()
+        return currentNode;
+      }
+      currentNode = currentNode.getNext();
     }
-    return null
+    return null;
   }
 
   /**
@@ -259,19 +259,19 @@ class LinkedList {
    * @returns {LinkedList}
    */
   filter(callback) {
-    if (typeof(callback) !== "function") {
-      throw new Error(`filter method needs callback to be a function`)
+    if (typeof callback !== "function") {
+      throw new Error(`filter method needs callback to be a function`);
     }
-    const list = new LinkedList()
-    let last = null
+    const list = new LinkedList();
+    let last = null;
     // let last = this._head
     this.forEach((node, position) => {
       if (callback(node, position)) {
-        last = list.insertLast(node._value, last)
-        list._count += 1
+        last = list.insertLast(node._value, last);
+        list._count += 1;
       }
-    })
-    return list
+    });
+    return list;
   }
 
   /**
@@ -311,9 +311,9 @@ class LinkedList {
   // }
   toArray() {
     //define
-    const result = []
-    this.forEach(node => result.push(node.getValue()))
-    return result
+    const result = [];
+    this.forEach((node) => result.push(node.getValue()));
+    return result;
   }
 
   /**
@@ -337,15 +337,9 @@ class LinkedList {
   }
 }
 
-const list = new LinkedList();
-list.insertFirst(6);
-list.insertFirst(7);
-list.insertFirst(8);
-list.insertFirst(9);
-console.log(list)
-const node = list.filter(node => node._value === 8)
-console.log(node)
+
+module.exports = {
+  LinkedList, Node
+}
 
 
-// console.log(list)
-// console.log(list.toArray())

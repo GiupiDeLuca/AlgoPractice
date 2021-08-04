@@ -1,5 +1,5 @@
 // import util from "util"; // required for custom object logging
-const util = require("util")
+const util = require("util");
 /**
  * @class BSTNode // Binary Search Tree Node
  */
@@ -25,6 +25,8 @@ class BSTNode {
    */
   setValue(value) {
     //define
+    this.#value = value;
+    return this;
   }
 
   /**
@@ -33,6 +35,7 @@ class BSTNode {
    */
   getValue() {
     //define
+    return this.#value;
   }
 
   /**
@@ -42,6 +45,8 @@ class BSTNode {
    */
   setLeft(left) {
     // define
+    this.#left = left;
+    return this;
   }
 
   /**
@@ -50,6 +55,7 @@ class BSTNode {
    */
   getLeft() {
     //define
+    return this.#left;
   }
 
   /**
@@ -58,6 +64,7 @@ class BSTNode {
    */
   hasLeft() {
     //define
+    return this.#left !== null;
   }
 
   /**
@@ -67,6 +74,8 @@ class BSTNode {
    */
   setRight(right) {
     //define
+    this.#right = right;
+    return this;
   }
 
   /**
@@ -75,6 +84,7 @@ class BSTNode {
    */
   getRight() {
     //define
+    return this.#right;
   }
 
   /**
@@ -83,6 +93,7 @@ class BSTNode {
    */
   hasRight() {
     //define
+    return this.#right !== null;
   }
 
   /**
@@ -92,6 +103,8 @@ class BSTNode {
    */
   setParent(parent) {
     //define
+    this.#parent = parent;
+    return this;
   }
 
   /**
@@ -100,6 +113,7 @@ class BSTNode {
    */
   getParent() {
     //define
+    return this.#parent;
   }
 
   /**
@@ -108,6 +122,7 @@ class BSTNode {
    */
   hasParent() {
     //define
+    return this.#parent !== null;
   }
 
   /**
@@ -116,6 +131,7 @@ class BSTNode {
    */
   isRoot() {
     //define
+    return this.hasParent() === false;
   }
 
   /**
@@ -124,6 +140,8 @@ class BSTNode {
    */
   isLeaf() {
     //define
+    return this.hasParent() === true;
   }
 }
 
+module.exports = BSTNode;

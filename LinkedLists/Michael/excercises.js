@@ -1,6 +1,5 @@
 const Classes = require("./defineNodeClass");
 
-
 const list1 = new Classes.LinkedList();
 list1.insertFirst(6);
 list1.insertFirst(7);
@@ -18,7 +17,7 @@ function concatenation(l1, l2) {
     let l1LastNode = l1.find((node) => node.getNext() === null);
     l1.insertLast(node, l1LastNode);
   });
-  return l1 
+  return l1;
 }
 
 // BY CREATING A NEW LIST
@@ -28,14 +27,35 @@ function concatenation(l1, l2) {
 //   return l2
 // }
 
+// WITHOUT CREATING A NEW LIST still TAKING EXTRA MEMORY
+// function reverse(l1) {
+//   const array = l1.toArray()
+//   l1.clear()
+//   array.forEach(value => l1.insertFirst(value))
+//   return l1
+// }
 
-// WITHOUT CREATING A NEW LIST
+// NO EXTRA MEMORY AND LINEAR TIME
 function reverse(l1) {
-  const array = l1.toArray()
-  l1.clear()
-  array.forEach(value => l1.insertFirst(value))
+  if (l1.count() <= 1) {
+    return l1
+  }
+  let head = l1.head();
+  let iterator1 = head.getNext();
+  let iterator2 = head.getNext().getNext();
+  head.setNext(null);
+  while (iterator2 !== null) {
+    iterator1.setNext(head);
+    head = iterator1;
+    iterator1 = iterator2;
+    iterator2 = iterator2.getNext();
+  }
+  iterator1.setNext(head);
+  head = iterator1;
+  l1._head = head
   return l1
 }
 
-console.log(concatenation(list1, list2))
-console.log(reverse(list1, list2))
+// console.log(concatenation(list1, list2))
+console.log(list1);
+console.log(reverse(list1));

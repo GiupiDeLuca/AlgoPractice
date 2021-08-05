@@ -21,11 +21,11 @@ class DoublyLinkedList {
       this.head = node;
       this.tail = node;
     } else {
+      this.head.prev = node;
       node.next = this.head;
       this.head = node;
       //   console.log("node", node);
       //   console.log("nodeNext", node.next);
-      node.next.prev = this.head;
       //   console.log("previous", node.next.prev)
     }
     return this;
@@ -49,6 +49,34 @@ class DoublyLinkedList {
 
   insertBefore(node, nodeToInsert) {
     // Write your code here.
+    let currentNode = this.head;
+    while (currentNode.next !== null) {
+      if (
+        currentNode.value === node.value &&
+        currentNode.next.value !== nodeToInsert.value
+      ) {
+        let nextNode = nodeToInsert.next
+        currentNode.prev.next = nodeToInsert;
+        nodeToInsert.next = currentNode;
+        nodeToInsert.prev.next = nextNode
+        currentNode.prev = nodeToInsert
+        if (nextNode !== null) {
+          nextNode.prev = nextNode.prev
+        }
+      } else if (
+        currentNode.value === node.value &&
+        currentNode.next.value === nodeToInsert.value
+      ) {
+        currentNode.prev.next = nodeToInsert;
+        currentNode.next = nodeToInsert.next;
+        nodeToInsert.next = currentNode;
+        currentNode.prev = nodeToInsert
+        currentNode.next.next.prev = currentNode
+      } else {
+        currentNode = currentNode.next;
+      }
+    }
+    return this
   }
 
   insertAfter(node, nodeToInsert) {
@@ -74,8 +102,10 @@ class DoublyLinkedList {
 
 const list = new DoublyLinkedList();
 const node1 = new Node(1);
-const node2 = new Node(2);
+const node2 = new Node(1);
+const node3 = new Node(3);
 
 list.setHead(node1);
+list.setHead(node3);
 list.setTail(node2);
 console.log(list);

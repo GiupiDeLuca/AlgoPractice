@@ -45,7 +45,12 @@ class BSTNode {
    */
   setLeft(left) {
     // define
-    this.#left = left;
+    if (left === null || left instanceof Node) {
+      this.#left = left;
+      if (left) left.setParent(this);
+    } else {
+      throw Error(`setLeft() expects instance of Node or null`);
+    }
     return this;
   }
 
@@ -74,7 +79,13 @@ class BSTNode {
    */
   setRight(right) {
     //define
-    this.#right = right;
+    if (right === null || right instanceof Node) {
+      this.#right = right;
+      if (right) right.setParent(this);
+    } else {
+      throw Error(`setRight() expects instance of Node or null`);
+    }
+
     return this;
   }
 
@@ -103,7 +114,11 @@ class BSTNode {
    */
   setParent(parent) {
     //define
-    this.#parent = parent;
+    if (parent === null || parent instanceof Node) {
+      this.#parent = parent;
+    } else {
+      throw Error(`setParent() expects instance of Node or null`);
+    }
     return this;
   }
 

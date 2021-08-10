@@ -53,7 +53,10 @@ class BinarySearchTree {
       this.#root = node;
       
     } else {
-        node.setParent(this.#root)
+        // node.setParent(this.#root)
+        if (node.getValue() < this.#root.getValue()) {
+            
+        }
     }
     this.#count += 1
     return this;

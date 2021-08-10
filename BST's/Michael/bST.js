@@ -2,7 +2,9 @@
 const util = require("util");
 const BSTNode = require("./BSTNode");
 /**
- * @class BinarySearchTree5 */
+ * 
+ @class BinarySearchTree5 
+ */
 class BinarySearchTree {
   #root;
   #count;
@@ -49,16 +51,26 @@ class BinarySearchTree {
   insert(value) {
     //define
     const node = new BSTNode(value);
+
     if (this.#root === null) {
       this.#root = node;
-      
     } else {
-        // node.setParent(this.#root)
-        if (node.getValue() < this.#root.getValue()) {
-            
+      // node.setParent(this.#root)
+      if (node.getValue() < this.#root.getValue()) {
+        if (this.#left === null) {
+          this.#left = node;
+        } else {
+          this.#left.insert(value);
         }
+      } else if (node.getValue() > this.#root.getValue()) {
+        if (this.#right === null) {
+          this.#right = node;
+        } else {
+          this.#right.insert(value);
+        }
+      }
     }
-    this.#count += 1
+    this.#count += 1;
     return this;
   }
 
@@ -70,6 +82,7 @@ class BinarySearchTree {
    */
   has(value) {
     //define
+    return this.find(value) !== null
   }
 
   /**
@@ -79,6 +92,15 @@ class BinarySearchTree {
    */
   find(value) {
     //define
+    if (this.#root.getValue() === value) {
+      return this.#root;
+    } else if (value < this.#root.getValue() && this.#left) {
+      return this.#left.find(value);
+    } else if (value > this.#root.getValue() && this.#right) {
+      return this.#right.find(value);
+    } else {
+      throw new Error(`node with value ${value} not found`);
+    }
   }
 
   /**
@@ -126,6 +148,7 @@ class BinarySearchTree {
    */
   root() {
     //define
+    return this.#root;
   }
 
   /**
@@ -179,5 +202,12 @@ class BinarySearchTree {
    */
   clear() {
     //define
+    this.#root = null;
+    return this;
   }
 }
+
+const tree = new BinarySearchTree();
+tree.insert(4);
+
+console.log(tree);

@@ -78,22 +78,24 @@ class BinarySearchTree {
    * Checks if a value exists in the tree
    * @public
    * @param {number|string} value
-   * @return
+   * @return {boolean}
    */
   has(value) {
     //define
-    return this.find(value) !== null
+    return this.find(value) !== null;
   }
 
   /**
    * Finds a
    * @public
-   * @param {number|string} value * @return {BSTNode}
+   * @param {number|string} value
+   * @return {BSTNode}
    */
   find(value) {
     //define
     if (this.#root.getValue() === value) {
-      return this.#root;
+      ///// is this.#root correct here?
+      return this.#root; //// is #root basically the node I'm starting from each time?
     } else if (value < this.#root.getValue() && this.#left) {
       return this.#left.find(value);
     } else if (value > this.#root.getValue() && this.#right) {
@@ -104,21 +106,31 @@ class BinarySearchTree {
   }
 
   /**
-   * Finds the node with max value (most right) in the tree * @public
+   * Finds the node with max value (most right) in the tree
+   * @public
    * @param {BSTNode} [current]
    * @return {BSTNode}
    */
   max(current = this.#root) {
     //define
+    while (current.hasRight()) {
+      current = current.getRight();
+    }
+    return current;
   }
 
   /**
-   * Finds the node with min value (most left) in the tree * @public
+   * Finds the node with min value (most left) in the tree
+   * @public
    * @param {BSTNode} [current]
    * @return {BSTNode}
    */
   min(current = this.#root) {
     //define
+    while (current.hasLeft()) {
+      current = current.getLeft();
+    }
+    return current;
   }
 
   /**
@@ -164,10 +176,19 @@ class BinarySearchTree {
    * Removes a node by its value
    * @public
    * @param {number|string} value
-   * @return {boolean}
+   * @return {boolean}                    // why return boolean??
    */
   remove(value) {
     //define
+    const nodeToRemove = this.find(value);
+    if (nodeToRemove) {
+      const parent = nodeToRemove.getParent();
+      parent.setRight(nodeToRemove.getRight());
+      parent.setLeft(nodeToRemove.getLeft());
+      return true
+    } else {
+      return false
+    }
   }
 
   /**

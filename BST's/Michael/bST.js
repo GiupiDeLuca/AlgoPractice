@@ -132,15 +132,39 @@ class BinarySearchTree {
     }
     return current;
   }
+  ///// OR RECURSION???? //////
+  // min(current = this.#root) {
+  //   if (!current.hasLeft()) {
+  //     return current
+  //   } else {
+  //     return current.getLeft().min(current)
+  //   }
+  // }
+  ////////////////////////////
 
   /**
-   * Returns the node with the biggest value less or equal to k
+   * Returns the node with the biggest value less or equal to k /// is "k" supposed to be value maybe?
    * @public
    * @param {number|string} value
    * @return {BSTNode|null}
    */
   lowerBound(value, current = this.#root) {
     //define
+    if (current) {
+      const arrayWithValues = [];
+      this.traverseInOrder((node) => arrayWithValues.push(node.getValue()));
+
+      const lowerValues = arrayWithValues.filter((val) => val <= value);
+
+      if (lowerValues.length > 0) {
+        const result = this.find(lowerValues.pop());
+        return result;
+      } else {
+        return null;
+      }
+    } else {
+      throw new Error(`tree is empty`);
+    }
   }
 
   /**
@@ -151,6 +175,21 @@ class BinarySearchTree {
    */
   upperBound(value, current = this.#root) {
     //define
+    if (current) {
+      const arrayWithValues = [];
+      this.traverseInOrder((node) => arrayWithValues.push(node.getValue()));
+
+      const biggerValues = arrayWithValues.filter((val) => val > value);
+
+      if (biggerValues.length > 0) {
+        const result = this.find(biggerValues.shift());
+        return result;
+      } else {
+        return null;
+      }
+    } else {
+      throw new Error(`tree is empty`);
+    }
   }
 
   /**
@@ -170,6 +209,9 @@ class BinarySearchTree {
    */
   count() {
     //define
+    const arrayWithValues = [];
+    this.traverseInOrder((node) => arrayWithValues.push(node.getValue()));
+    return arrayWithValues.length;
   }
 
   /**
@@ -185,11 +227,13 @@ class BinarySearchTree {
       const parent = nodeToRemove.getParent();
       parent.setRight(nodeToRemove.getRight());
       parent.setLeft(nodeToRemove.getLeft());
-      return true
+      return true;
     } else {
-      return false
+      return false;
     }
   }
+
+  // COULD WE TALK ABOUT DIFFERENT USE CASES FOR THE VARIOUS TRAVERSE METHODS ? ///
 
   /**
    * Traverses the tree in-order (left-node-right)
@@ -198,6 +242,17 @@ class BinarySearchTree {
    */
   traverseInOrder(cb) {
     //define
+    let current = this.#root;
+
+    if (current.getLeft()) {
+      current.getLeft().traverseInOrder(cb);
+    }
+
+    cb(current);
+
+    if (current.getRight()) {
+      current.getRight().traverseInOrder(cb);
+    }
   }
 
   /**
@@ -207,6 +262,16 @@ class BinarySearchTree {
    */
   traversePreOrder(cb) {
     //define
+    let current = this.#root;
+
+    cb(current);
+
+    if (current.getLeft()) {
+      current.getLeft().traverseInOrder(cb);
+    }
+    if (current.getRight()) {
+      current.getRight().traverseInOrder(cb);
+    }
   }
 
   /**
@@ -216,6 +281,15 @@ class BinarySearchTree {
    */
   traversePostOrder(cb) {
     //define
+    let current = this.#root;
+
+    if (current.getLeft()) {
+      current.getLeft().traverseInOrder(cb);
+    }
+    if (current.getRight()) {
+      current.getRight().traverseInOrder(cb);
+    }
+    cb(current);
   }
 
   /**
@@ -232,3 +306,5 @@ const tree = new BinarySearchTree();
 tree.insert(4);
 
 console.log(tree);
+
+module.exports = BinarySearchTree;

@@ -54,23 +54,27 @@ class BinarySearchTree {
 
     if (this.#root === null) {
       this.#root = node;
+      this.#count += 1;
     } else {
-      // node.setParent(this.#root)
-      if (node.getValue() < this.#root.getValue()) {
-        if (this.#left === null) {
-          this.#left = node;
-        } else {
-          this.#left.insert(value);
-        }
-      } else if (node.getValue() > this.#root.getValue()) {
-        if (this.#right === null) {
-          this.#right = node;
-        } else {
-          this.#right.insert(value);
+      let currentNode = this.#root;
+      while (!node.hasParent() || currentNode.getValue() !== node.getValue()) {
+        if (node.getValue() < currentNode.getValue()) {
+          if (currentNode.getLeft() === null) {
+            currentNode.setLeft(node);
+            this.#count += 1;
+          } else {
+            currentNode = currentNode.getLeft();
+          }
+        } else if (node.getValue() > currentNode.getValue()) {
+          if (currentNode.getRight() === null) {
+            currentNode.setRight(node);
+            this.#count += 1;
+          } else {
+            currentNode = currentNode.getRight();
+          }
         }
       }
     }
-    this.#count += 1;
     return this;
   }
 
@@ -91,6 +95,7 @@ class BinarySearchTree {
    * @param {number|string} value
    * @return {BSTNode}
    */
+  // ADD A NICE WHILE LOOP HERE 
   find(value) {
     //define
     if (this.#root.getValue() === value) {
@@ -105,205 +110,211 @@ class BinarySearchTree {
     }
   }
 
-  /**
-   * Finds the node with max value (most right) in the tree
-   * @public
-   * @param {BSTNode} [current]
-   * @return {BSTNode}
-   */
-  max(current = this.#root) {
-    //define
-    while (current.hasRight()) {
-      current = current.getRight();
-    }
-    return current;
-  }
+  // /**
+  //  * Finds the node with max value (most right) in the tree
+  //  * @public
+  //  * @param {BSTNode} [current]
+  //  * @return {BSTNode}
+  //  */
+  // max(current = this.#root) {
+  //   //define
+  //   while (current.hasRight()) {
+  //     current = current.getRight();
+  //   }
+  //   return current;
+  // }
 
-  /**
-   * Finds the node with min value (most left) in the tree
-   * @public
-   * @param {BSTNode} [current]
-   * @return {BSTNode}
-   */
-  min(current = this.#root) {
-    //define
-    while (current.hasLeft()) {
-      current = current.getLeft();
-    }
-    return current;
-  }
-  ///// OR RECURSION???? //////
+  // /**
+  //  * Finds the node with min value (most left) in the tree
+  //  * @public
+  //  * @param {BSTNode} [current]
+  //  * @return {BSTNode}
+  //  */
   // min(current = this.#root) {
-  //   if (!current.hasLeft()) {
-  //     return current
+  //   //define
+  //   while (current.hasLeft()) {
+  //     current = current.getLeft();
+  //   }
+  //   return current;
+  // }
+  // ///// OR RECURSION???? //////
+  // // min(current = this.#root) {
+  // //   if (!current.hasLeft()) {
+  // //     return current
+  // //   } else {
+  // //     return current.getLeft().min(current)
+  // //   }
+  // // }
+  // ////////////////////////////
+
+  // /**
+  //  * Returns the node with the biggest value less or equal to k /// is "k" supposed to be value maybe?
+  //  * @public
+  //  * @param {number|string} value
+  //  * @return {BSTNode|null}
+  //  */
+  // lowerBound(value, current = this.#root) {
+  //   //define
+  //   if (current) {
+  //     const arrayWithValues = [];
+  //     this.traverseInOrder((node) => arrayWithValues.push(node.getValue()));
+
+  //     const lowerValues = arrayWithValues.filter((val) => val <= value);
+
+  //     if (lowerValues.length > 0) {
+  //       const result = this.find(lowerValues.pop());
+  //       return result;
+  //     } else {
+  //       return null;
+  //     }
   //   } else {
-  //     return current.getLeft().min(current)
+  //     throw new Error(`tree is empty`);
   //   }
   // }
-  ////////////////////////////
 
-  /**
-   * Returns the node with the biggest value less or equal to k /// is "k" supposed to be value maybe?
-   * @public
-   * @param {number|string} value
-   * @return {BSTNode|null}
-   */
-  lowerBound(value, current = this.#root) {
-    //define
-    if (current) {
-      const arrayWithValues = [];
-      this.traverseInOrder((node) => arrayWithValues.push(node.getValue()));
+  // /**
+  //  * Returns the node with the smallest value bigger than value
+  //  * @public
+  //  * @param {number|string} value
+  //  * @return {BSTNode|null}
+  //  */
+  // upperBound(value, current = this.#root) {
+  //   //define
+  //   if (current) {
+  //     const arrayWithValues = [];
+  //     this.traverseInOrder((node) => arrayWithValues.push(node.getValue()));
 
-      const lowerValues = arrayWithValues.filter((val) => val <= value);
+  //     const biggerValues = arrayWithValues.filter((val) => val > value);
 
-      if (lowerValues.length > 0) {
-        const result = this.find(lowerValues.pop());
-        return result;
-      } else {
-        return null;
-      }
-    } else {
-      throw new Error(`tree is empty`);
-    }
-  }
+  //     if (biggerValues.length > 0) {
+  //       const result = this.find(biggerValues.shift());
+  //       return result;
+  //     } else {
+  //       return null;
+  //     }
+  //   } else {
+  //     throw new Error(`tree is empty`);
+  //   }
+  // }
 
-  /**
-   * Returns the node with the smallest value bigger than value
-   * @public
-   * @param {number|string} value
-   * @return {BSTNode|null}
-   */
-  upperBound(value, current = this.#root) {
-    //define
-    if (current) {
-      const arrayWithValues = [];
-      this.traverseInOrder((node) => arrayWithValues.push(node.getValue()));
+  // /**
+  //  * Returns the root node
+  //  * @public
+  //  * @return
+  //  */
+  // root() {
+  //   //define
+  //   return this.#root;
+  // }
 
-      const biggerValues = arrayWithValues.filter((val) => val > value);
+  // /**
+  //  * Returns the nodes count
+  //  * @public
+  //  * @return {number}
+  //  */
+  // count() {
+  //   //define
+  //   const arrayWithValues = [];
+  //   this.traverseInOrder((node) => arrayWithValues.push(node.getValue()));
+  //   return arrayWithValues.length;
+  // }
 
-      if (biggerValues.length > 0) {
-        const result = this.find(biggerValues.shift());
-        return result;
-      } else {
-        return null;
-      }
-    } else {
-      throw new Error(`tree is empty`);
-    }
-  }
+  // /**
+  //  * Removes a node by its value
+  //  * @public
+  //  * @param {number|string} value
+  //  * @return {boolean}                    // why return boolean??
+  //  */
+  // remove(value) {
+  //   //define
+  //   const nodeToRemove = this.find(value);
+  //   if (nodeToRemove) {
+  //     const parent = nodeToRemove.getParent();
+  //     parent.setRight(nodeToRemove.getRight());
+  //     parent.setLeft(nodeToRemove.getLeft());
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 
-  /**
-   * Returns the root node
-   * @public
-   * @return
-   */
-  root() {
-    //define
-    return this.#root;
-  }
+  // // COULD WE TALK ABOUT DIFFERENT USE CASES FOR THE VARIOUS TRAVERSE METHODS ? ///
 
-  /**
-   * Returns the nodes count
-   * @public
-   * @return {number}
-   */
-  count() {
-    //define
-    const arrayWithValues = [];
-    this.traverseInOrder((node) => arrayWithValues.push(node.getValue()));
-    return arrayWithValues.length;
-  }
+  // /**
+  //  * Traverses the tree in-order (left-node-right)
+  //  * @public
+  //  * @param {function} cb
+  //  */
+  // traverseInOrder(cb) {
+  //   //define
+  //   let current = this.#root;
 
-  /**
-   * Removes a node by its value
-   * @public
-   * @param {number|string} value
-   * @return {boolean}                    // why return boolean??
-   */
-  remove(value) {
-    //define
-    const nodeToRemove = this.find(value);
-    if (nodeToRemove) {
-      const parent = nodeToRemove.getParent();
-      parent.setRight(nodeToRemove.getRight());
-      parent.setLeft(nodeToRemove.getLeft());
-      return true;
-    } else {
-      return false;
-    }
-  }
+  //   if (current.getLeft()) {
+  //     current.getLeft().traverseInOrder(cb);
+  //   }
 
-  // COULD WE TALK ABOUT DIFFERENT USE CASES FOR THE VARIOUS TRAVERSE METHODS ? ///
+  //   cb(current);
 
-  /**
-   * Traverses the tree in-order (left-node-right)
-   * @public
-   * @param {function} cb
-   */
-  traverseInOrder(cb) {
-    //define
-    let current = this.#root;
+  //   if (current.getRight()) {
+  //     current.getRight().traverseInOrder(cb);
+  //   }
+  // }
 
-    if (current.getLeft()) {
-      current.getLeft().traverseInOrder(cb);
-    }
+  // /**
+  //  * Traverses the tree pre-order (node-left-right)
+  //  * @public
+  //  * @param {function} cb
+  //  */
+  // traversePreOrder(cb) {
+  //   //define
+  //   let current = this.#root;
 
-    cb(current);
+  //   cb(current);
 
-    if (current.getRight()) {
-      current.getRight().traverseInOrder(cb);
-    }
-  }
+  //   if (current.getLeft()) {
+  //     current.getLeft().traverseInOrder(cb);
+  //   }
+  //   if (current.getRight()) {
+  //     current.getRight().traverseInOrder(cb);
+  //   }
+  // }
 
-  /**
-   * Traverses the tree pre-order (node-left-right)
-   * @public
-   * @param {function} cb
-   */
-  traversePreOrder(cb) {
-    //define
-    let current = this.#root;
+  // /**
+  //  * Traverses the tree post-order (left-right-node)
+  //  * @public
+  //  * @param {function} cb
+  //  */
+  // traversePostOrder(cb) {
+  //   //define
+  //   let current = this.#root;
 
-    cb(current);
+  //   if (current.getLeft()) {
+  //     current.getLeft().traverseInOrder(cb);
+  //   }
+  //   if (current.getRight()) {
+  //     current.getRight().traverseInOrder(cb);
+  //   }
+  //   cb(current);
+  // }
 
-    if (current.getLeft()) {
-      current.getLeft().traverseInOrder(cb);
-    }
-    if (current.getRight()) {
-      current.getRight().traverseInOrder(cb);
-    }
-  }
-
-  /**
-   * Traverses the tree post-order (left-right-node)
-   * @public
-   * @param {function} cb
-   */
-  traversePostOrder(cb) {
-    //define
-    let current = this.#root;
-
-    if (current.getLeft()) {
-      current.getLeft().traverseInOrder(cb);
-    }
-    if (current.getRight()) {
-      current.getRight().traverseInOrder(cb);
-    }
-    cb(current);
-  }
-
-  /**
-   * Clears the tree * @public
-   */
-  clear() {
-    //define
-    this.#root = null;
-    return this;
-  }
+  // /**
+  //  * Clears the tree * @public
+  //  */
+  // clear() {
+  //   //define
+  //   this.#root = null;
+  //   return this;
+  // }
 }
 
 const tree = new BinarySearchTree();
-tree.insert(4);
+tree.insert(10);
+tree.insert(7);
+tree.insert(12);
+tree.insert(14);
+tree.insert(8);
+tree.insert(9);
+
 
 console.log(tree);
 

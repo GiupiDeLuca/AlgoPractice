@@ -45,7 +45,7 @@ class BSTNode {
    */
   setLeft(left) {
     // define
-    if (left === null || left instanceof Node) {
+    if (left === null || left instanceof BSTNode) {
       this.#left = left;
       if (left) left.setParent(this);
     } else {
@@ -63,6 +63,20 @@ class BSTNode {
     return this.#left;
   }
 
+  // `get left(){}` will allow to have a more readable variale "example: this.left"
+  // it's still read-only
+  // I would have to create a set left() in order to be able to change its value. 
+  //  |
+  //  V
+  // /**
+  //  * @public
+  //  * @return {BSTNode}
+  //  */
+  // get left() {
+  //   //define
+  //   return this.#left;
+  // }
+
   /**
    * @public
    * @return {boolean}
@@ -79,7 +93,7 @@ class BSTNode {
    */
   setRight(right) {
     //define
-    if (right === null || right instanceof Node) {
+    if (right === null || right instanceof BSTNode) {
       this.#right = right;
       if (right) right.setParent(this);
     } else {
@@ -114,7 +128,7 @@ class BSTNode {
    */
   setParent(parent) {
     //define
-    if (parent === null || parent instanceof Node) {
+    if (parent === null || parent instanceof BSTNode) {
       this.#parent = parent;
     } else {
       throw Error(`setParent() expects instance of Node or null`);

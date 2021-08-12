@@ -109,7 +109,8 @@ class DoublyLinkedList {
       let currentPosition = 1;
       while (currentNode.next !== null) {
         if (currentNode === node) {
-          this.insertAtPosition(currentPosition, nodeToInsert);
+          this.insertAtPosition(currentPosition, removedNode);
+          break;
         }
         currentNode = currentNode.next;
         currentPosition += 1;
@@ -120,6 +121,7 @@ class DoublyLinkedList {
 
   insertAfter(node, nodeToInsert) {
     // Write your code here.
+    // IF NODE IS TAIL THEN USE SEtTAIL METHOD
     if (this.head === null) {
       this.head = nodeToInsert;
     } else if (this.head === node) {

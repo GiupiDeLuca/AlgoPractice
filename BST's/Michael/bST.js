@@ -96,21 +96,38 @@ class BinarySearchTree {
    * @return {BSTNode}
    */
   // ADD A NICE WHILE LOOP HERE
+  // find(value) {
+  //   //define
+  //   let currentNode = this.#root;
+  //   if (currentNode.getValue() === value) {
+  //     ///// is this.#root correct here?
+  //     return currentNode; //// is #root basically the node I'm starting from each time?
+  //   } else if (value < currentNode.getValue() && currentNode.hasLeft()) {
+  //     this.#root = currentNode.getLeft() 
+  //     return this.find(value);
+  //   } else if (value > currentNode.getValue() && currentNode.hasRight()) {
+  //     this.#root =  currentNode.getRight() 
+  //     return this.find(value);
+  //   } else {
+  //     // throw new Error(`node with value ${value} not found`);
+  //     return null
+  //   }
+  // }
+
   find(value) {
     //define
     let currentNode = this.#root;
-    if (currentNode.getValue() === value) {
-      ///// is this.#root correct here?
-      return currentNode; //// is #root basically the node I'm starting from each time?
-    } else if (value < currentNode.getValue() && currentNode.hasLeft()) {
-      this.#root = currentNode.getLeft() 
-      return this.find(value);
-    } else if (value > currentNode.getValue() && currentNode.hasRight()) {
-      this.#root =  currentNode.getRight() 
-      return this.find(value);
-    } else {
-      throw new Error(`node with value ${value} not found`);
+
+    while (currentNode) {
+      if (currentNode.getValue() === value) {
+        return currentNode
+      } else if (value < currentNode.getValue()) {
+        currentNode = currentNode.getLeft() 
+      } else if (value > currentNode.getValue()) {
+        currentNode = currentNode.getRight() 
+      }
     }
+    return null
   }
 
   /**
@@ -162,9 +179,11 @@ class BinarySearchTree {
     //define
     if (current) {
       const arrayWithValues = [];
+      console.log("thisBefore", this)
       this.traverseInOrder((node) => arrayWithValues.push(node.getValue()));
-  
+      console.log("thisAfter", this)
       const lowerValues = arrayWithValues.filter((val) => val <= value);
+        console.log("lowerValues", lowerValues)
 
       if (lowerValues.length > 0) {
         const nodeValue = lowerValues.pop();
@@ -331,12 +350,17 @@ tree.insert(14);
 tree.insert(8);
 tree.insert(9);
 
+const result  = tree.lowerBound(9)
+console.log("result", result)
+console.log("tree", tree)
 
-
-console.log(tree);
-
-const result = tree.remove(9)
-// console.log(result instanceof BSTNode)
-console.log("result",result);
+// try {
+//   console.log("tree before");
+//   console.log(tree);
+//   tree.lowerBound(20);
+// } catch {
+//   console.log("tree after");
+//   console.log(tree);
+// }
 
 module.exports = BinarySearchTree;

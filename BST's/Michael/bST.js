@@ -332,30 +332,40 @@ class BinarySearchTree {
     this.#root = null;
     return this;
   }
+
+  BFT(tree, cb) {
+    const treeArray = [tree.#root];
+    let node = treeArray.shift();
+    while (node) {
+      cb(node);
+      if (node.hasLeft()) {
+        treeArray.push(node.getLeft());
+      }
+      if (node.hasRight()) {
+        treeArray.push(node.getRight());
+      }
+      node = treeArray.shift();
+    }
+    // WHAT SHOULD I RETURN HERE???  IF ANYTHING? OR IS IT UP TO THE CALLBACK?
+  }
+
+  findPair(tree, sum) {
+    
+  }
 }
 
 const tree = new BinarySearchTree();
-tree.insert(10);
+tree.insert(4);
+tree.insert(2);
+tree.insert(6);
+tree.insert(1);
+tree.insert(3);
+tree.insert(5);
 tree.insert(7);
-tree.insert(12);
-tree.insert(14);
-tree.insert(8);
-tree.insert(9);
 console.log("tree", tree);
-const result = tree.traverseInOrder();
-console.log("result", result);
-
-// const result = tree.lowerBound(9);
-// console.log("result", result);
-// console.log("tree", tree);
-
-// try {
-//   console.log("tree before");
-//   console.log(tree);
-//   tree.lowerBound(20);
-// } catch {
-//   console.log("tree after");
-//   console.log(tree);
-// }
+const test = [];
+tree.BFT(tree, (node) => test.push(node));
+console.log("test", test);
+console.log("tree", tree);
 
 module.exports = BinarySearchTree;

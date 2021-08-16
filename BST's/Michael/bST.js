@@ -103,10 +103,10 @@ class BinarySearchTree {
   //     ///// is this.#root correct here?
   //     return currentNode; //// is #root basically the node I'm starting from each time?
   //   } else if (value < currentNode.getValue() && currentNode.hasLeft()) {
-  //     this.#root = currentNode.getLeft() 
+  //     this.#root = currentNode.getLeft()
   //     return this.find(value);
   //   } else if (value > currentNode.getValue() && currentNode.hasRight()) {
-  //     this.#root =  currentNode.getRight() 
+  //     this.#root =  currentNode.getRight()
   //     return this.find(value);
   //   } else {
   //     // throw new Error(`node with value ${value} not found`);
@@ -120,14 +120,14 @@ class BinarySearchTree {
 
     while (currentNode) {
       if (currentNode.getValue() === value) {
-        return currentNode
+        return currentNode;
       } else if (value < currentNode.getValue()) {
-        currentNode = currentNode.getLeft() 
+        currentNode = currentNode.getLeft();
       } else if (value > currentNode.getValue()) {
-        currentNode = currentNode.getRight() 
+        currentNode = currentNode.getRight();
       }
     }
-    return null
+    return null;
   }
 
   /**
@@ -161,10 +161,10 @@ class BinarySearchTree {
   // ///// OR RECURSION???? //////
   min(current = this.#root) {
     if (!current.hasLeft()) {
-      return current
+      return current;
     } else {
-      current = current.getLeft()
-      return this.min(current)
+      current = current.getLeft();
+      return this.min(current);
     }
   }
   // ////////////////////////////
@@ -177,20 +177,40 @@ class BinarySearchTree {
    */
   lowerBound(value, current = this.#root) {
     //define
+    if (current === null) return null;
+    if (current.getValue() === value) return current;
+    if (current.getValue() > value) {
+      return this.lowerBound(value, current.getLeft());
+    } else if (current.getValue() < value) {
+      if (
+        current.getRight().getValue() > value &&
+        current.getRight().hasLeft()
+      ) {
+        return this.lowerBound(value, current.getRight());
+      } else if (current.getRight().getValue() < value) {
+        return this.lowerBound(value, current.getRight());
+      }
+    }
+    return current;
+  }
+
+  /**
+   * Returns the node with the smallest value bigger than value
+   * @public
+   * @param {number|string} value
+   * @return {BSTNode|null}
+   */
+  upperBound(value, current = this.#root) {
+    //define
     if (current) {
       const arrayWithValues = [];
-      console.log("thisBefore", this)
       this.traverseInOrder((node) => arrayWithValues.push(node.getValue()));
-      console.log("thisAfter", this)
-      const lowerValues = arrayWithValues.filter((val) => val <= value);
-        console.log("lowerValues", lowerValues)
 
-      if (lowerValues.length > 0) {
-        const nodeValue = lowerValues.pop();
-        console.log("nodevalue", nodeValue)
-        
-        // WHY IS THIS.FIND(NODEVALUE) NOT WORKING?? 
-        const result = this.find(nodeValue)
+      const biggerValues = arrayWithValues.filter((val) => val > value);
+
+      if (biggerValues.length > 0) {
+        const nodeValue = biggerValues.shift();
+        const result = this.find(nodeValue);
         return result;
       } else {
         return null;
@@ -199,32 +219,6 @@ class BinarySearchTree {
       throw new Error(`tree is empty`);
     }
   }
-
-  // /**
-  //  * Returns the node with the smallest value bigger than value
-  //  * @public
-  //  * @param {number|string} value
-  //  * @return {BSTNode|null}
-  //  */
-  // upperBound(value, current = this.#root) {
-  //   //define
-  //   if (current) {
-  //     const arrayWithValues = [];
-  //     this.traverseInOrder((node) => arrayWithValues.push(node.getValue()));
-
-  //     const biggerValues = arrayWithValues.filter((val) => val > value);
-
-  //     if (biggerValues.length > 0) {
-  //       const nodeValue = biggerValues.shift()
-  //       const result = this.find(nodeValue);
-  //       return result;
-  //     } else {
-  //       return null;
-  //     }
-  //   } else {
-  //     throw new Error(`tree is empty`);
-  //   }
-  // }
 
   /**
    * Returns the root node
@@ -276,19 +270,19 @@ class BinarySearchTree {
    */
   traverseInOrder(cb) {
     //define
-    let current = this.#root;
+    const recursiveTIO = (currentNode) => {
+      if (currentNode.hasLeft()) {
+        recursiveTIO(currentNode.getLeft());
+      }
 
-    if (current.getLeft()) {
-      this.#root = current.getLeft()
-      this.traverseInOrder(cb);
-    }
+      cb(currentNode);
 
-    cb(current);
+      if (currentNode.hasRight()) {
+        recursiveTIO(currentNode.getRight());
+      }
+    };
 
-    if (current.getRight()) {
-      this.#root = current.getRight()
-      this.traverseInOrder(cb);
-    }
+    recursiveTIO(this.#root);
   }
 
   /**
@@ -298,18 +292,17 @@ class BinarySearchTree {
    */
   traversePreOrder(cb) {
     //define
-    let current = this.#root;
+    const recursiveTIO = (currentNode) => {
+      cd(currentNode);
 
-    cb(current);
-
-    if (current.getLeft()) {
-      this.#root = current.getLeft()
-      this.traverseInOrder(cb);
-    }
-    if (current.getRight()) {
-      this.#root = current.getRight()
-      this.traverseInOrder(cb);
-    }
+      if (currentNode.hasLeft()) {
+        recursiveTIO(currentNode.getLeft());
+      }
+      if (currentNode.hasRight()) {
+        recursiveTIO(currentNode.getRight());
+      }
+    };
+    recursiveTIO(this.#root);
   }
 
   /**
@@ -319,17 +312,16 @@ class BinarySearchTree {
    */
   traversePostOrder(cb) {
     //define
-    let current = this.#root;
-
-    if (current.getLeft()) {
-      this.#root = current.getLeft()
-      this.traverseInOrder(cb);
-    }
-    if (current.getRight()) {
-      this.#root = current.getRight()
-      this.traverseInOrder(cb);
-    }
-    cb(current);
+    const recursiveTIO = (currentNode) => {
+      if (currentNode.hasLeft()) {
+        recursiveTIO(currentNode.getLeft());
+      }
+      if (currentNode.hasRight()) {
+        recursiveTIO(currentNode.getRight());
+      }
+      cb(currentNode);
+    };
+    recursiveTIO(this.#root);
   }
 
   /**
@@ -349,10 +341,13 @@ tree.insert(12);
 tree.insert(14);
 tree.insert(8);
 tree.insert(9);
+console.log("tree", tree);
+const result = tree.traverseInOrder();
+console.log("result", result);
 
-const result  = tree.lowerBound(9)
-console.log("result", result)
-console.log("tree", tree)
+// const result = tree.lowerBound(9);
+// console.log("result", result);
+// console.log("tree", tree);
 
 // try {
 //   console.log("tree before");

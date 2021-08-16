@@ -333,6 +333,8 @@ class BinarySearchTree {
     return this;
   }
 
+  // TRAVERSE THE TREE BREADTH FIRST
+
   BFT(tree, cb) {
     const treeArray = [tree.#root];
     let node = treeArray.shift();
@@ -349,8 +351,19 @@ class BinarySearchTree {
     // WHAT SHOULD I RETURN HERE???  IF ANYTHING? OR IS IT UP TO THE CALLBACK?
   }
 
+  // FIND THE NODE PAIRS IN THE TREE THAT ADD UP TO SUM //
+
   findPair(tree, sum) {
-    
+    const array = [];
+    tree.traverseInOrder((node) => array.push(node.getValue()));
+    const result = [];
+    array.forEach((value) => {
+      let difference = sum - value;
+      if (array.includes(difference) && difference !== value) {
+        result.push([value, difference].sort((a, b) => a - b));
+      }
+    });
+    return Array.from(new Set(result.map(JSON.stringify)), JSON.parse);
   }
 }
 
@@ -366,6 +379,7 @@ console.log("tree", tree);
 const test = [];
 tree.BFT(tree, (node) => test.push(node));
 console.log("test", test);
-console.log("tree", tree);
+
+console.log(tree.findPair(tree, 8));
 
 module.exports = BinarySearchTree;

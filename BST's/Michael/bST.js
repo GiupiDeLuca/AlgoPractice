@@ -336,7 +336,7 @@ class BinarySearchTree {
   // TRAVERSE THE TREE BREADTH FIRST
 
   BFT(tree, cb) {
-    const treeArray = [tree.#root];
+    const treeArray = [tree.root()];
     let node = treeArray.shift();
     while (node) {
       cb(node);

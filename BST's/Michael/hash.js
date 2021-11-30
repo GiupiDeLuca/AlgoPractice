@@ -5,7 +5,7 @@ function findK(array) {
   const counter = {};
 
   array.forEach((value) => {
-    if (counter[value] === undefined) {
+    if (!counter[value]) {  /// or counter[value] === undefined
       counter[value] = 1;
     } else {
       counter[value]++;
